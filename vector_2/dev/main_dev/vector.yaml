@@ -1,0 +1,199 @@
+acknowledgements:
+  enabled: true
+sources:
+  vector_metrics:
+    type: internal_metrics
+  input:
+    type: aws_s3
+    sqs:
+      queue_url: "https://sqs.us-east-1.amazonaws.com/178445662108/us-east-dev-corp-gdap-errorbudget-sqs"
+      poll_secs: 5
+      #delete_message: true
+    region: "us-east-1"
+    assume_role: arn:aws:iam::178445662108:role/us-east-dev-us-gda-dev-errorbudget-ec2-role
+    #acknowledgements:
+      #enabled: true
+
+transforms:
+  parse_json:
+    type: remap
+    inputs:
+      - input
+    source: |
+       . = parse_json!(.message)
+       . = unnest!(.logEvents)
+       . = map_values(.)  -> |event| {
+
+       json_msg = replace(string!(event.logEvents.message), "None", "0")
+       json_msg = string!(event.logEvents.message)
+
+       if starts_with(json_msg, "[ERROR]") || starts_with(json_msg, "[INFO]") {
+           msg = parse_json!(split(json_msg, "\t")[3])
+       } else {
+           msg = parse_json!(json_msg)
+       }
+
+       msg.logGroup=event.logGroup
+       msg.raw_event = msg
+       if (msg.product == "mosot")
+             { if (msg.appName == "process_csat" || msg.appName == "process_satl"  )
+               {msg.outputFileName = ""
+                msg.totalFileRecords = 0
+                }
+             }
+
+       if (msg.product == "npd-circana")
+             {msg.product = "mosot"}
+       if (msg.source_app == "DASH")
+             {msg.product = "mosot"
+             msg.appName = "mosot-api" }
+       if (msg.product == "star checkpoint")
+             {msg.product = "star" }
+       if (msg.source_app == "ITEM-VISTA")
+             {msg.product = "item-vista"
+             msg.appName = "item-vista" }
+       if (msg.process_name == "STLD-Heuristics")
+             {msg.product = "stld"}
+       if (msg.product == "mds-c" || msg.product == "mdsc")
+             {msg.product = "mdsc"}
+       if (msg.product == "nds-gds" || msg.product == "semingest")
+             {msg.product = "star"}
+       if (msg.product == "people_analytics")
+             {msg.product = "people-analytics"}
+       msg
+       }
+
+  route_log:
+    type: route
+    inputs:
+      - parse_json
+    route:
+       prod_mosot:  .product == "mosot"
+       prod_star:   .product == "star"
+       prod_canvas:   .product == "canvas"
+       prod_item-vista:   .product == "item-vista"
+       prod_dmb:   .product == "dmb"
+       prod_tech360: .product == "tech360"
+       prod_mdsc: .product == "mdsc"
+       prod_f360: .product == "f360"
+       prod_stld: .product == "stld"
+       prod_fnp: .product == "fnp"
+       prod_people-analytics: .product == "people-analytics"
+       prod_gfmod: .product == "gfmod"
+       prod_salesforecast: .product == "salesforecast"
+
+#log:
+ #level: "debug"
+
+sinks:
+  i1:
+    type: console
+    inputs:
+      - input
+    encoding:
+       codec: json
+    target: stdout
+
+  i2:
+    type: console
+    inputs:
+      - parse_json
+    encoding:
+       codec: json
+    target: stdout
+
+  prometheus:
+    type: prometheus_exporter
+    inputs:
+      - vector_metrics
+    address: "0.0.0.0:9092"
+
+
+  mosot:
+    type: vector
+    inputs:
+      - route_log.prod_mosot
+    address: http://vector-dev.mcd.com/vector-mosot/
+
+  star:
+    type: vector
+    inputs:
+      - route_log.prod_star
+    address: localhost:6002
+
+  canvas:
+    type: vector
+    inputs:
+      - route_log.prod_canvas
+    address: localhost:6005
+
+  item-vista:
+    type: vector
+    inputs:
+      - route_log.prod_item-vista
+    address: localhost:6006
+
+  dmb:
+    type: vector
+    inputs:
+      - route_log.prod_dmb
+    address: localhost:6007
+
+  tech360:
+    type: vector
+    inputs:
+      - route_log.prod_tech360
+    address: localhost:6008
+  #  acknowledgements:
+   #   enabled: true
+
+  mdsc:
+    type: vector
+    inputs:
+      - route_log.prod_mdsc
+    address: localhost:6009
+ #   acknowledgements:
+ #     enabled: true
+
+  f360:
+    type: vector
+    inputs:
+      - route_log.prod_f360
+    address: localhost:6011
+
+  stld:
+    type: vector
+    inputs:
+      - route_log.prod_stld
+    address: localhost:6012
+
+  fnp:
+    type: vector
+    inputs:
+      - route_log.prod_fnp
+    address: localhost:6013
+
+  people-analytics:
+    type: vector
+    inputs:
+      - route_log.prod_people-analytics
+    address: localhost:6014
+
+  gfmod:
+    type: vector
+    inputs:
+      - route_log.prod_gfmod
+    address: localhost:6015
+
+  salesforecast:
+    type: vector
+    inputs:
+      - route_log.prod_salesforecast
+    address: localhost:6016
+
+
+  unmatched:
+    type: vector
+    inputs:
+      - route_log._unmatched
+    address: localhost:6003

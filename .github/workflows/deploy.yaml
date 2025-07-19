@@ -1,0 +1,38 @@
+name: Deploy to ECS
+
+on:
+  push:
+    branches:
+      - vector-2  # Change this to your branch 
+      
+
+jobs:
+  deploy:
+    runs-on: self-hosted  # Your EC2 self-hosted runner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.7
+
+      - name: Terraform Init
+        working-directory: vector/dev/mosot_dev
+        run: terraform init
+
+      - name: Terraform Validate
+        working-directory: vector/dev/mosot_dev
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: vector/dev/mosot_dev 
+        run: terraform plan -out=tfplan -var-file=mosot_dev.tfvars
+
+      - name: Terraform Apply
+        working-directory: vector/dev/mosot_dev
+        run: terraform apply -auto-approve tfplan
+
+      

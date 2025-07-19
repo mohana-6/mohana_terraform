@@ -1,0 +1,91 @@
+sources:
+  vector_metrics:
+    type: internal_metrics
+
+  input:
+    type: vector
+    address: 0.0.0.0:8686
+
+transforms:
+  parse_json:
+    inputs:
+     - input
+    type: remap
+    drop_on_error: false
+    source: |
+           if (strip_whitespace(to_string!(.processedFileRecords)) == "")
+           { .processedFileRecords = 0 }
+           if (strip_whitespace(to_string!(.failedFileRecords)) == "")
+           { .failedFileRecords = 0 }
+           if (strip_whitespace(to_string!(.totalFileRecords)) == "")
+           { .totalFileRecords = 0 }
+           .processedFileRecords = to_int!(.processedFileRecords)
+           .failedFileRecords = to_int!(.failedFileRecords)
+           .totalFileRecords = to_int!(.totalFileRecords)
+           .duration = to_float!(.duration)
+           .integrationFlow = to_string!(.appName)
+           .statusCode = to_int!(.statusCode)
+           if (strip_whitespace(to_string!(.businessDate)) == "")
+           { del(.businessDate) }
+           if (strip_whitespace(to_string!(.exception)) == "")
+           { del(.exception) }
+           .timestamp = to_unix_timestamp(parse_timestamp!(.timestamp, format: "%F %T %.6f"))
+           if (.appName == "mosot-api")
+           {
+            .correlationId = .correlation_id
+            .market = downcase!(.market_code)
+            .duration = .processing_time
+            .processedFileRecords = 0
+            .failedFileRecords = 0
+            .totalFileRecords = 0
+            .endpoint = replace!(.endpoint,r'/([^/]+)/[^/]+.*', "$$1")
+            .integrationFlow = .endpoint + "-" + downcase(to_string!(.operation))
+            if (.Success_flg == "Y")
+             {.statusCode = 200}
+            if (.Success_flg == "N" && .StatusCode != "401")
+             {.statusCode = 500}
+            del(.correlation_id)
+            del(.market_code)
+            del(.processing_time)
+            del(.StatusCode)
+            del(.Success_flg)
+            del(.source_app)
+            del(.terrcd)
+            del(.endpoint)
+            del(.operation)
+           }
+
+sinks:
+  i1:
+    type: console
+    inputs:
+      - input
+    encoding:
+       codec: json
+    target: stdout
+
+  i2:
+    type: console
+    inputs:
+      - parse_json
+    encoding:
+       codec: json
+    target: stdout
+
+  mosot:
+    type: clickhouse
+    inputs:
+      - parse_json
+    database: default
+    endpoint: http://10.0.1.15:8123
+    table: cloudwatch
+    auth:
+      strategy: basic
+      user: "${clk_val1}"
+      password: "${clk_val2}"
+
+  prometheus:
+    type: prometheus_exporter
+    inputs:
+      - vector_metrics
+    address: "0.0.0.0:9092"
