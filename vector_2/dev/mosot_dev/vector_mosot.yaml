@@ -4,7 +4,7 @@ sources:
 
   input:
     type: vector
-    address: 0.0.0.0:8686
+    address: 0.0.0.0:8687
 
 transforms:
   parse_json:

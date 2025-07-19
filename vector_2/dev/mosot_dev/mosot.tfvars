@@ -24,13 +24,8 @@ service_count          = 1
 
 port_mappings = [
   {
-    containerPort = 8686
-    hostPort      = 8686
-    protocol      = "tcp"
-  },
-   {
-    containerPort = 80
-    hostPort      = 80
+    containerPort = 8687
+    hostPort      = 8687
     protocol      = "tcp"
   }
 

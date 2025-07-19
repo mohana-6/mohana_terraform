@@ -10,7 +10,7 @@ sources:
       poll_secs: 5
       #delete_message: true
     region: "us-east-1"
-    assume_role: arn:aws:iam::178445662108:role/us-east-dev-us-gda-dev-errorbudget-ec2-role
+    assume_role: arn:aws:iam::324936657337:role/errorbudget_ec2_role
     #acknowledgements:
       #enabled: true
 
@@ -113,7 +113,7 @@ sinks:
     type: vector
     inputs:
       - route_log.prod_mosot
-    address: http://vector-dev.mcd.com/vector-mosot/
+    address: mohana-errorbudget-nlb-9f9069ba60a83bf0.elb.us-east-1.amazonaws.com:8687
 
   star:
     type: vector
