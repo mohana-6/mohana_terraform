@@ -15,12 +15,12 @@ container_image        = "324936657337.dkr.ecr.us-east-1.amazonaws.com/errorbudg
 #target_group_arn_alb   = "arn:aws:elasticloadbalancing:us-east-1:324936657337:targetgroup/vector-mosot-target/cc6dcfdecfcf242f"
 #target_group_arn_nlb   = var.target_group_arn_nlb
 
-min_capacity           = 0
-max_capacity           = 0
+min_capacity           = 1
+max_capacity           = 1
 cpu_target_value       = 85
 scale_in_cooldown      = 300
 scale_out_cooldown     = 300
-service_count          = 0
+service_count          = 1
 
 port_mappings = [
   {
