@@ -8,7 +8,7 @@ provider "aws" {
   }
 }
 
-resource "aws_s3_object" "vector_config" {
+resource "aws_s3_object" "vector_config_dev" {
   bucket = var.bucket_name
   key    = "vector_config_dev/vector_mosot.yaml" 
   source = "vector_mosot.yaml"  
