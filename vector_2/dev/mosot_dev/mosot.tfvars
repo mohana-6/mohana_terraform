@@ -14,6 +14,7 @@ container_image        = "324936657337.dkr.ecr.us-east-1.amazonaws.com/errorbudg
 #nginx_image = "269031123365.dkr.ecr.us-east-1.amazonaws.com/mohana:nginx"
 #target_group_arn_alb   = "arn:aws:elasticloadbalancing:us-east-1:324936657337:targetgroup/vector-mosot-target/cc6dcfdecfcf242f"
 #target_group_arn_nlb   = var.target_group_arn_nlb
+
 min_capacity           = 0
 max_capacity           = 0
 cpu_target_value       = 85
