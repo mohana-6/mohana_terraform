@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket  =  "mohana6-bucket"
+    bucket  =  "errorbudget-s3"
     key     =  "errorbudget-terraform-tfstate/vector-main-dev.tfstate"
     region  =  "us-east-1"
     encrypt = true
