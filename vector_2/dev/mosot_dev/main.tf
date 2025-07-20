@@ -37,7 +37,8 @@ module "vector_mosot" {
   #nginx_image            = var.nginx_image 
   environment            = var.environment
   #target_group_arn_alb = var.target_group_arn_alb
-  #target_group_arn_nlb = var.target_group_arn_nlb
+  target_group_arn_nlb = var.target_group_arn_nlb
+  container_port   =  var.container_port    
 
   
   # Network configuration

@@ -30,13 +30,13 @@ variable "cluster_name" {
   description = "target_group for the vector"
   type        = string
   default     = "vector"
-}
+}*/
 
 variable "target_group_arn_nlb" {
   description = "target_group for the vector"
   type        = string
   default     = "vector"
-}*/
+}
 
 variable "vector_image" {
   description = "Docker image for Vector"
@@ -50,6 +50,10 @@ variable "container_image" {
   default     = "vector"
 }
 
+variable "container_port" {
+  description = "Port the container listens on"
+  type        = number
+}
 
 
 variable "vector_version" {

@@ -28,13 +28,13 @@ variable "cluster_name" {
   description = "target_group for the vector"
   type        = string
   default     = "vector"
-}
+}*/
 
 variable "target_group_arn_nlb" {
   description = "target_group for the vector"
   type        = string
   default     = "vector"
-}*/
+}
 
 variable "vpc_id" {
   description = "VPC ID where the resources will be deployed"
@@ -66,6 +66,11 @@ variable "container_image" {
   description = "Docker image for the vector"
   type        = string
   default     = "vector"
+}
+
+variable "container_port" {
+  description = "Port the container listens on"
+  type        = number
 }
 
 variable "port_mappings" {

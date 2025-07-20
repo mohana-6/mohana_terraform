@@ -24,17 +24,22 @@ variable "cluster_name" {
   type        = string
 }
 
+variable "container_port" {
+  description = "Port the container listens on"
+  type        = number
+}
+
 /*variable "target_group_arn_alb" {
   description = "target_group for the vector"
   type        = string
   default     = "vector"
-}
+}*/
 
 variable "target_group_arn_nlb" {
   description = "target_group for the vector"
   type        = string
   default     = "vector"
-}*/
+}
 
 variable "vpc_id" {
   description = "VPC ID where the resources will be deployed"
