@@ -1,10 +1,6 @@
 acknowledgements:
   enabled: true
 sources:
-  mosot_input:
-    type: vector
-    address: 0.0.0.0:8687
-    
   vector_metrics:
     type: internal_metrics
   input:
