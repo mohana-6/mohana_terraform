@@ -38,7 +38,8 @@ module "vector_mosot" {
   environment            = var.environment
   #target_group_arn_alb = var.target_group_arn_alb
   target_group_arn_nlb = var.target_group_arn_nlb
-  container_port   =  var.container_port    
+  container_port   =  var.container_port   
+  attach_to_lb = var.attach_to_lb 
 
   
   # Network configuration

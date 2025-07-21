@@ -196,6 +196,12 @@ variable "scale_out_cooldown" {
   default     = 300
 }
 
+variable "attach_to_lb" {
+  description = "Whether to attach this service to a load balancer"
+  type        = bool
+  default     = false
+}
+
 /*variable "nginx_image" {
   description = "nginx image"
   type        = string

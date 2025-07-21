@@ -35,11 +35,11 @@ variable "container_port" {
   default     = "vector"
 }*/
 
-variable "target_group_arn_nlb" {
+/*variable "target_group_arn_nlb" {
   description = "target_group for the vector"
   type        = string
   default     = "vector"
-}
+}*/
 
 variable "vpc_id" {
   description = "VPC ID where the resources will be deployed"
@@ -188,6 +188,12 @@ variable "scale_out_cooldown" {
   description = "Cooldown time before scaling out"
   type        = number
   default     = 300
+}
+
+variable "attach_to_lb" {
+  description = "Whether to attach this service to a load balancer"
+  type        = bool
+  default     = false
 }
 
 /*variable "nginx_image" {

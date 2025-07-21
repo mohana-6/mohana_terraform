@@ -102,10 +102,13 @@ resource "aws_ecs_service" "vector_main" {
     assign_public_ip = var.assign_public_ip
   }
 
-  load_balancer {
-    target_group_arn = var.target_group_arn_nlb
-    container_name   = "vector-${var.name}" 
-    container_port   =  var.container_port             
+  dynamic "load_balancer" {
+    for_each = var.attach_to_lb ? [1] : []
+    content {
+      target_group_arn = var.target_group_arn_nlb
+      container_name   = "vector-${var.name}"
+      container_port   = var.container_port
+    }
   }
 }
 

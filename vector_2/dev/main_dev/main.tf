@@ -1,4 +1,3 @@
-
 provider "aws" {
   region = var.aws_region
 
@@ -31,9 +30,10 @@ module "vector_main" {
   container_image        = var.container_image
   #nginx_image            = var.nginx_image 
   environment            = var.environment
+  container_port         = var.container_port
   #target_group_arn_alb = var.target_group_arn_alb
   #target_group_arn_nlb = var.target_group_arn_nlb
-
+  attach_to_lb = var.attach_to_lb
   service_count       = var.service_count
   min_capacity        = var.min_capacity
   max_capacity        = var.max_capacity

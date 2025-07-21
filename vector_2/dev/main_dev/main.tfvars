@@ -14,6 +14,8 @@ container_image        = "324936657337.dkr.ecr.us-east-1.amazonaws.com/errorbudg
 #nginx_image = "269031123365.dkr.ecr.us-east-1.amazonaws.com/mohana:nginx"
 #target_group_arn_alb      = "arn:aws:elasticloadbalancing:us-east-1:324936657337:targetgroup/vector-tg/dd25bfa3edae118d"
 #target_group_arn_nlb      = var.target_group_arn_nlb
+container_port         =  8686
+attach_to_lb = false
 
 # Autoscaling Configuration
 min_capacity       = 1
