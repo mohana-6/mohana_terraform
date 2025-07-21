@@ -6,7 +6,7 @@ sources:
   input:
     type: aws_s3
     sqs:
-      queue_url: "https://sqs.us-east-1.amazonaws.com/178445662108/us-east-dev-corp-gdap-errorbudget-sqs"
+      queue_url: "https://sqs.us-east-1.amazonaws.com/324936657337/vector-test-queue"
       poll_secs: 5
       #delete_message: true
     region: "us-east-1"
