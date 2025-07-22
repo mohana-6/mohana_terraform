@@ -35,7 +35,7 @@ transforms:
             {.integrationFlow = "sem-ingest-gdap"}
  
 sinks:
-i1:
+ i1:
    type: console
    inputs:
      - input
@@ -43,7 +43,7 @@ i1:
       codec: json
    target: stdout
  
-i2:
+ i2:
    type: console
    inputs:
      - parse_json
@@ -51,7 +51,7 @@ i2:
       codec: json
    target: stdout
  
-star:
+ star:
     type: clickhouse
     inputs:
       - parse_json
@@ -63,7 +63,7 @@ star:
       user: "${clk_val1}"
       password: "${clk_val2}"
  
-prometheus:
+ prometheus:
     type: prometheus_exporter
     inputs:
       - vector_metrics
