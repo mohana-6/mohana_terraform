@@ -1,19 +1,13 @@
 acknowledgements:
   enabled: true
 sources:
-  vector_metrics:
-    type: internal_metrics
   input:
     type: aws_sqs
-    sqs:
-      queue_url: "https://sqs.us-east-1.amazonaws.com/324936657337/vector-test-queue"
-      poll_secs: 5
-      #delete_message: true
+    queue_url: "https://sqs.us-east-1.amazonaws.com/324936657337/vector-test-queue"
     region: "us-east-1"
-    assume_role: arn:aws:iam::324936657337:role/errorbudget_ec2_role
-    #acknowledgements:
-      #enabled: true
-
+    poll_secs: 5
+    assume_role: "arn:aws:iam::324936657337:role/errorbudget_ec2_role"
+    
 transforms:
   parse_json:
     type: remap
