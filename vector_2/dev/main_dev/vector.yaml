@@ -6,8 +6,8 @@ sources:
     queue_url: "https://sqs.us-east-1.amazonaws.com/324936657337/vector-test-queue"
     region: "us-east-1"
     poll_secs: 5
-    assume_role: "arn:aws:iam::324936657337:role/errorbudget_ec2_role"
-    
+    #assume_role: "arn:aws:iam::324936657337:role/errorbudget_ec2_role"
+
 transforms:
   parse_json:
     type: remap
