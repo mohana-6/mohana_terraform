@@ -7,6 +7,8 @@ sources:
     region: "us-east-1"
     poll_secs: 5
     #assume_role: "arn:aws:iam::324936657337:role/errorbudget_ec2_role"
+  vector_metrics:
+    type: internal_metrics
 
 transforms:
   parse_json:
