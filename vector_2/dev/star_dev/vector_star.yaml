@@ -1,0 +1,70 @@
+sources:
+  vector_metrics:
+    type: internal_metrics
+  input:
+    type: vector
+    address: 0.0.0.0:8688
+ 
+transforms:
+  parse_json:
+    inputs:
+     - input
+    type: remap
+    drop_on_error: false
+    source: |
+           .processedFileRecords = to_int!(.processedFileRecords)
+           .failedFileRecords = to_int!(.failedFileRecords)
+           .totalFileRecords = to_int!(.totalFileRecords)
+           .duration = to_int!(.duration)
+           .statusCode = to_int!(.statusCode)
+           .market = downcase!(.market)
+            if (.statusCode == null || .statusCode == 0 || .correlationId == null)
+            { abort }
+            if (strip_whitespace(to_string!(.businessDate)) == "")
+            { del(.businessDate) }
+            if (strip_whitespace(to_string!(.exception)) == "")
+            { del(.exception) }
+            .timestamp = to_unix_timestamp(parse_timestamp!(.timestamp, format: "%F %T %.6f"))
+            if (.logGroup == "/aws/lambda/us-east-dev3-corp-gdap-nrt-star-retry-lambda")
+            { .integrationFlow = "posxml-psv-retry" }
+            if (.integrationFlow == "semingest-spa")
+            {.integrationFlow = "emr_nds_gds"}
+            if (.logGroup == "/aws/lambda/us-east-dev-us-gdw-dev-sem-ingest-dlq-lambda" || .integrationFlow == "dmaas-dsale")
+            {.integrationFlow = "sem-ingest-dlq"}
+            if (.logGroup == "/aws/lambda/us-east-dev-us-gdw-dev-seim-ingest-lambda" || .integrationFlow == "dmaas-dsale")
+            {.integrationFlow = "sem-ingest-gdap"}
+ 
+sinks:
+i1:
+   type: console
+   inputs:
+     - input
+   encoding:
+      codec: json
+   target: stdout
+ 
+i2:
+   type: console
+   inputs:
+     - parse_json
+   encoding:
+      codec: json
+   target: stdout
+ 
+star:
+    type: clickhouse
+    inputs:
+      - parse_json
+    database: default
+    endpoint: http://10.0.1.15:8123
+    table: cloudwatch
+    auth:
+      strategy: basic
+      user: "${clk_val1}"
+      password: "${clk_val2}"
+ 
+prometheus:
+    type: prometheus_exporter
+    inputs:
+      - vector_metrics
+    address: "0.0.0.0:9092"

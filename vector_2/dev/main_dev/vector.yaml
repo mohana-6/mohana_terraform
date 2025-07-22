@@ -4,7 +4,7 @@ sources:
   vector_metrics:
     type: internal_metrics
   input:
-    type: aws_s3
+    type: aws_sqs
     sqs:
       queue_url: "https://sqs.us-east-1.amazonaws.com/324936657337/vector-test-queue"
       poll_secs: 5
@@ -119,7 +119,7 @@ sinks:
     type: vector
     inputs:
       - route_log.prod_star
-    address: localhost:6002
+    address: mohana-errorbudget-nlb-9f9069ba60a83bf0.elb.us-east-1.amazonaws.com:8688
 
   canvas:
     type: vector
