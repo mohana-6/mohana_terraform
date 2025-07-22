@@ -32,8 +32,8 @@ port_mappings = [
 
 ]
 
-task_cpu               = "2048"
-task_memory            = "4096"
+task_cpu               = "1024"
+task_memory            = "2048"
 vector_version         = "0.39.0-alpine"
 vector_log_level       = "info"
 log_retention_days     = 30
