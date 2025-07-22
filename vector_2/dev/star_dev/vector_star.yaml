@@ -4,6 +4,8 @@ sources:
   input:
     type: vector
     address: 0.0.0.0:8688
+    acknowledgements:
+      enabled: true
  
 transforms:
   parse_json:
