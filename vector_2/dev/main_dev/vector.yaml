@@ -117,7 +117,7 @@ sinks:
     type: vector
     inputs:
       - route_log.prod_star
-    address: ${VECTOR_HOST}:{VECTOR_STAR_PORT}
+    address: "${VECTOR_HOST}:${VECTOR_STAR_PORT}"
 
   canvas:
     type: vector
