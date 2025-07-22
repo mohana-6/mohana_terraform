@@ -32,7 +32,7 @@ jobs:
         run: terraform plan -out=tfplan -var-file=star.tfvars
 
       - name: Terraform Apply
-        working-directory: vector_2/dev/stars_dev
+        working-directory: vector_2/dev/star_dev
         run: terraform apply -auto-approve tfplan
 
       
