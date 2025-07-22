@@ -117,7 +117,7 @@ sinks:
     type: vector
     inputs:
       - route_log.prod_star
-    address: mohana-errorbudget-nlb-9f9069ba60a83bf0.elb.us-east-1.amazonaws.com:8688
+    address: ${VECTOR_HOST}:{VECTOR_STAR_PORT}
 
   canvas:
     type: vector

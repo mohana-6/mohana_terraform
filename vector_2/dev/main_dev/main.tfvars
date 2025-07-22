@@ -53,8 +53,10 @@ log_retention_days     = 30
 environment = {
   "VECTOR_LOG" = "debug"
   "VECTOR_CONFIG_BUCKET_URL" = "s3://errorbudget-s3/vector_config_dev/vector.yaml"
-  "VECTOR_MOSOT_HOST" ="mohana-errorbudget-nlb-9f9069ba60a83bf0.elb.us-east-1.amazonaws.com"
+  "VECTOR_HOST" ="mohana-errorbudget-nlb-9f9069ba60a83bf0.elb.us-east-1.amazonaws.com"
   "VECTOR_MOSOT_PORT" = "8687"
+  "VECTOR_STAR_PORT" = "8688"
+
 }
 
 tags = {
