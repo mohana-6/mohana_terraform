@@ -58,7 +58,7 @@ sinks:
     inputs:
       - parse_json
     database: default
-    endpoint: http://10.0.1.15:8128
+    endpoint: http://10.0.1.15:8123
     table: cloudwatch
     auth:
       strategy: basic
