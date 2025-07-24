@@ -33,6 +33,6 @@ jobs:
 
       - name: Terraform Destory
         working-directory: vector_2/dev/star_dev
-        run: terraform destroy -auto-approve tfplan
+        run: terraform destroy -auto-approve 
 
       
