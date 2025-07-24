@@ -31,8 +31,8 @@ jobs:
         working-directory: vector_2/dev/star_dev 
         run: terraform plan -out=tfplan -var-file=star.tfvars
 
-      - name: Terraform Apply
+      - name: Terraform Destory
         working-directory: vector_2/dev/star_dev
-        run: terraform apply -auto-approve tfplan
+        run: terraform destroy -auto-approve tfplan
 
       
