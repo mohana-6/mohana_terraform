@@ -33,6 +33,7 @@ jobs:
 
       - name: Terraform Destory
         working-directory: vector_2/dev/star_dev
-        run: terraform destroy -auto-approve -var="bucket_name=errorbudget-s3"
+        run: terraform destroy -auto-approve -var="bucket_name=errorbudget-s3" -var="cluster_name=errorbudget-cluster"
+
 
       
